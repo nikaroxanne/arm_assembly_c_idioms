@@ -1,0 +1,94 @@
+
+array_reversal:	file format Mach-O 64-bit x86-64
+
+
+Disassembly of section __TEXT,__text:
+
+0000000000000000 _main:
+       0: 55                           	pushq	%rbp
+       1: 48 89 e5                     	movq	%rsp, %rbp
+       4: 48 83 ec 30                  	subq	$48, %rsp
+       8: c7 45 fc 00 00 00 00         	movl	$0, -4(%rbp)
+       f: 48 8d 3d 32 01 00 00         	leaq	306(%rip), %rdi
+      16: 48 8d 75 f8                  	leaq	-8(%rbp), %rsi
+      1a: b0 00                        	movb	$0, %al
+      1c: e8 00 00 00 00               	callq	0 <_main+0x21>
+      21: 48 63 4d f8                  	movslq	-8(%rbp), %rcx
+      25: 48 c1 e1 02                  	shlq	$2, %rcx
+      29: 48 89 cf                     	movq	%rcx, %rdi
+      2c: 89 45 d8                     	movl	%eax, -40(%rbp)
+      2f: e8 00 00 00 00               	callq	0 <_main+0x34>
+      34: 48 89 45 f0                  	movq	%rax, -16(%rbp)
+      38: c7 45 ec 00 00 00 00         	movl	$0, -20(%rbp)
+      3f: 8b 45 ec                     	movl	-20(%rbp), %eax
+      42: 3b 45 f8                     	cmpl	-8(%rbp), %eax
+      45: 0f 8d 2e 00 00 00            	jge	46 <_main+0x79>
+      4b: 48 8b 45 f0                  	movq	-16(%rbp), %rax
+      4f: 48 63 4d ec                  	movslq	-20(%rbp), %rcx
+      53: 48 c1 e1 02                  	shlq	$2, %rcx
+      57: 48 01 c8                     	addq	%rcx, %rax
+      5a: 48 8d 3d e7 00 00 00         	leaq	231(%rip), %rdi
+      61: 48 89 c6                     	movq	%rax, %rsi
+      64: b0 00                        	movb	$0, %al
+      66: e8 00 00 00 00               	callq	0 <_main+0x6b>
+      6b: 8b 45 ec                     	movl	-20(%rbp), %eax
+      6e: 83 c0 01                     	addl	$1, %eax
+      71: 89 45 ec                     	movl	%eax, -20(%rbp)
+      74: e9 c6 ff ff ff               	jmp	-58 <_main+0x3f>
+      79: 8b 45 f8                     	movl	-8(%rbp), %eax
+      7c: 99                           	cltd
+      7d: b9 02 00 00 00               	movl	$2, %ecx
+      82: f7 f9                        	idivl	%ecx
+      84: f2 0f 2a c0                  	cvtsi2sd	%eax, %xmm0
+      88: 66 0f 3a 0b c0 09            	roundsd	$9, %xmm0, %xmm0
+      8e: f2 0f 2c c0                  	cvttsd2si	%xmm0, %eax
+      92: 89 45 e8                     	movl	%eax, -24(%rbp)
+      95: 8b 45 f8                     	movl	-8(%rbp), %eax
+      98: 83 e8 01                     	subl	$1, %eax
+      9b: 89 45 e4                     	movl	%eax, -28(%rbp)
+      9e: c7 45 e0 00 00 00 00         	movl	$0, -32(%rbp)
+      a5: 8b 45 e0                     	movl	-32(%rbp), %eax
+      a8: 3b 45 e8                     	cmpl	-24(%rbp), %eax
+      ab: 0f 8d 49 00 00 00            	jge	73 <_main+0xfa>
+      b1: 48 8b 45 f0                  	movq	-16(%rbp), %rax
+      b5: 48 63 4d e0                  	movslq	-32(%rbp), %rcx
+      b9: 8b 14 88                     	movl	(%rax,%rcx,4), %edx
+      bc: 89 55 dc                     	movl	%edx, -36(%rbp)
+      bf: 48 8b 45 f0                  	movq	-16(%rbp), %rax
+      c3: 48 63 4d e4                  	movslq	-28(%rbp), %rcx
+      c7: 8b 14 88                     	movl	(%rax,%rcx,4), %edx
+      ca: 48 8b 45 f0                  	movq	-16(%rbp), %rax
+      ce: 48 63 4d e0                  	movslq	-32(%rbp), %rcx
+      d2: 89 14 88                     	movl	%edx, (%rax,%rcx,4)
+      d5: 8b 55 dc                     	movl	-36(%rbp), %edx
+      d8: 48 8b 45 f0                  	movq	-16(%rbp), %rax
+      dc: 48 63 4d e4                  	movslq	-28(%rbp), %rcx
+      e0: 89 14 88                     	movl	%edx, (%rax,%rcx,4)
+      e3: 8b 55 e4                     	movl	-28(%rbp), %edx
+      e6: 83 c2 ff                     	addl	$-1, %edx
+      e9: 89 55 e4                     	movl	%edx, -28(%rbp)
+      ec: 8b 45 e0                     	movl	-32(%rbp), %eax
+      ef: 83 c0 01                     	addl	$1, %eax
+      f2: 89 45 e0                     	movl	%eax, -32(%rbp)
+      f5: e9 ab ff ff ff               	jmp	-85 <_main+0xa5>
+      fa: c7 45 ec 00 00 00 00         	movl	$0, -20(%rbp)
+     101: 8b 45 ec                     	movl	-20(%rbp), %eax
+     104: 3b 45 f8                     	cmpl	-8(%rbp), %eax
+     107: 0f 8d 27 00 00 00            	jge	39 <_main+0x134>
+     10d: 48 8b 45 f0                  	movq	-16(%rbp), %rax
+     111: 48 63 4d ec                  	movslq	-20(%rbp), %rcx
+     115: 8b 34 88                     	movl	(%rax,%rcx,4), %esi
+     118: 48 8d 3d 2c 00 00 00         	leaq	44(%rip), %rdi
+     11f: b0 00                        	movb	$0, %al
+     121: e8 00 00 00 00               	callq	0 <_main+0x126>
+     126: 8b 45 ec                     	movl	-20(%rbp), %eax
+     129: 83 c0 01                     	addl	$1, %eax
+     12c: 89 45 ec                     	movl	%eax, -20(%rbp)
+     12f: e9 cd ff ff ff               	jmp	-51 <_main+0x101>
+     134: 48 8b 45 f0                  	movq	-16(%rbp), %rax
+     138: 48 89 c7                     	movq	%rax, %rdi
+     13b: e8 00 00 00 00               	callq	0 <_main+0x140>
+     140: 31 c0                        	xorl	%eax, %eax
+     142: 48 83 c4 30                  	addq	$48, %rsp
+     146: 5d                           	popq	%rbp
+     147: c3                           	retq
