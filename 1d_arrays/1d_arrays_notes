@@ -1,0 +1,173 @@
+1d_arrays_notes
+
+
+The program 1d_arrays.c reads a value from stdin, an int n, and allocates an array of integers of length n. 
+Then, n integers are read from stdin (again, using scanf) and those values are stored in the newly created array arr, at the indices corresponding to the order in which those numbers are read from stdin.
+
+So, if n is 3, int* array arr is allocated with size 3.
+Then, three integers are read from stdin. The first integer is stored in arr[0], the second in arr[1], the third in arr[2].
+
+1d_arrays allocates an array of integers of size n, reads n integers from stdin and stores those integers at their corresponding indices in the array arr. Then, an integer sum is initialized to 0, and the values in arr are read and added to that accumulator integer sum. Then, this value sum is printed to stdout, memory allocated for array arr is freed and the program exits.
+
+Creates an array of integers, arr, of size n.
+Calculates the sum of all of the integers in arr.
+Prints the value of that sum.
+Frees the memory allocated for array arr and exits.
+
+
+
+***
+
+On line 7, there is a sub instruction which substracts 24 from our stack pointer. This tells us that the size of the stack frame for this function (main), is 24. 
+
+On line 8, we have an instruction that adds sp (a pointer) plus 0, so sp, to the value at r7. So the instruction on line 9 is adding the value &(*(sp - 24)) to r7. So r7 now points to the bottom of our stack frame, it is our base pointer (approximately equivalent to EBP in x86).
+
+
+r7 + 24 ->  {lr}
+			{r7}
+r7 + 8
+r7 + 4
+r7 --> 		sp
+
+
+
+On line 9, the value (r7 + 4) is added to the register r3. We know that r7 stores an address (the base of the stack, sp), so (r7 + 4) is an address with an offset of 4. 
+
+On line 10, the value r3 is stored in r1.
+
+On line 11, the value [pc + 132] is stored in r3. This is a value from the literal pool, located at the end of main. So this is loading a literal value into the register r3.
+
+On line 12, the value $pc is added to r3.
+And on line 13, r3 is stored in register r0.
+
+Then on line 14, there is a call to scanf, which we can see because this is not a stripped binary, so we have all of our symbolic info. You're welcome.
+
+In C, the function scanf expects at least one argument (const char* format), and then can take a variable number of successive arguments. The string format.
+
+So we know that the first argument to scanf will be that format string, and any subsequent arguments will be the addresses of where to store the value(s) that satisfy the requirements of that format string.
+
+Recall from lines 7-13 that r1 contains the address (r7 + 4), and r0 contains the value from our literal pool that corresponds to our format string. The next register used for passing arguments, r2, is not mentioned, so we can pretty safely assume that r0 and r1 are the only two arguments being passed to scanf.
+
+On line 15, after returning from scanf, there is a load instruction, that takes the value pointed to by the pointer at [r7 + 4], and loads it into the register r3. 
+
+On line 16, there is the lsls instruction.
+
+On line 17, r3 is moved into r0.
+On line 18, there is a call to malloc.
+
+In C, the malloc function accepts one argument, an integer value corresponding to the size of memory to be allocated on the heap. The format for this integer value typically follows the pattern (n * sizeof(type)), where n is the type of data (i.e. int, char) and n is the number of elements of that type. 
+
+So line 18 calls malloc and returns an array of integers, int* arr, that has size n. When malloc returns, arr is returned in r0.
+So on line 19, the mov instruction moves this array arr, from r0 to r3.
+Then on line 20, r3 (meaning r0, meaning arr), is stored at the address [r7 + 8].
+So arr is now stored in the stack frame at offset [r7 + 8].
+
+On line 21, there is a mov instruction, which moves the literal value 0 into r3. So, this zeroes out the r3 register.
+Then on line 22, there is another str instruction, which stores the new value in r3 (0), to the address [r7 + 20]
+
+Now our stack looks like this:
+
+r7 + 24
+r7 + 20			0
+r7 + 16
+r7 + 12			
+r7 + 8			arr
+r7 + 4			n
+r7
+
+On line 23, there is an unconditional branch instruction (b), which jumps execution of the program to line 36 (0x5f6).
+
+Continuing after this branch, on line 36, there is a load instruction that loads the value at [r7 + 4] into register r3.
+On line 37, there is a similar load instruction that loads the value at [r7 + 20] into register r2.
+
+So, now r2 = 0, and r3 = n
+On line 38, there is a cmp instruction which compares the values in r2 and r3 by evaluating (r2 -r3), and setting the appropriate flags.
+
+
+So, what is the equivalent of the ARM Assembly lines 36-38 in the C program?
+Line 12! This is the conditional for the first for loop, that checks whether (int i < n) is true and, if so, branches and continues execution inside the loop.
+
+
+On lines 24-39, we have the main body of the first loop in the C program (lines 12-14 in 1d_arrays_.c)
+
+
+
+On line 24, [r7 + 20] is loaded into r3. 
+On line 25, the value at r3 is shifted left by 2, so (r3 << 2) or (r3 * 2^2, or (r3 * 4)
+
+
+On line 26, [r7 + 8] is loaded into r2
+
+On line 27, r2 is added to r3, so r3+= r2. Since we know that r3 contains an address, and r2 contains an integer value, we can deduce that this operation is moving the pointer r3 by an offset of r2. We know that the value in r3 is the address of the int array arr, so this instruction is moving the array to point to the element at the index designated by the value in r2 (i).
+
+So why the lsls instruction from earlier on line 25?
+Because we need to move the address by an offset that corresponds to the size of the data that is in each element of the array in memory. So, since the array arr is an array of integers, each element will have size 4, so the address of each element in the array will be aligned by a 4-byte offset. So accessing the element at arr[i] is equivalent to calculating &arr + 4(i).
+
+This is equivalent to accessing an element in an array.
+
+On line 28, the value in r3, the address of arr[i], or &(*(arr + i)), is moved into register r1
+
+On line 29, we have another similar load instruction to the instruction from line 11, that loaded a value from the literal pool, that corresponded to the string "%d." If we look in the literal pool at the specified offset, and then reference this with the value in the .data section, we can see that this is the same "%d" string. Hello hello is this a pattern we're seeing?! (IT IS)
+
+Again, as with lines 12-13, on lines 30-31, the value $pc is added to the value in r3, and r3 is moved to r0.
+Then, on line 32, there's the same scanf call as before, this time passing r0 ("%d") and r1 (&(*(arr + i))).
+
+On line 33, the value [r7 + 20] is loaded into r3. Remember that [r7 + 20] is the address of the variable i. So r3 = i
+On line 34, the value 1 is added to r3. So, r3 += 1
+Then, on line 35, this new value of r3 is stored back at the same address [r7 + 20].
+
+So, lines 33-35 are the i+= 1 of the loop!
+
+On lines 36 and 37, the values in [r7 + 20] and [r7 + 4] are loaded into registers r3 and r2 respectively. We know that the values at these addresses are i and the address of n respectively. Then, on line 38, there is another cmp instruction... oh wait! We've seen this before. We were literally already on these lines. This is the evaluation of (i < n), ah another pattern!!
+
+
+So, now we know that the loop will continue executing lines 24-39 until the condition (i < n) is no longer met. 
+
+Okay, so we've read n integers from stdin using scanf and stored those integers in the array arr allocated earlier. 
+Let's continue.
+
+On line 40, we load the value 0 into the register r3. 
+On line 41, we store that value in r3 at the address [r7 + 8].
+We do the same thing on lines 42-43: load 0 into r3, store that value at an address, though this time the address is [r7 + 12].
+
+So we have just initialized two variables and stored them on the stack. These are sum (in r2) and j (in r3).
+
+On line 44, we have another unconditional branch (b) to address 61e (line 56), so let's jump (ha, still funny) down to that address.
+
+On line 56, the value at address [r7 + 4] is loaded into r3.
+On line 57, the value at address [r7 + 12] is loaded into r2.
+Then, on line 58, those two values are compared, appropriate flags set.
+On line 59, we have a conditional branch, blt (branch if less than). So if (r2 < r3), then branch to address 0x608 (line 45).
+
+This feels familiar...
+Oh wait, it's the same structure of the for loop from earlier!
+And sure enough, since r2 = j and r3 = n, this is the conditional of the for loop on line 17 in the C program.
+If (j < n), then we take the branch to continue execution at line 56. Let's do that.
+
+On 45-48, we're performing the same instructions as earlier (lines 24-27), load value at [r7 + ] into r3, perform a logical left shift by 4 on r3, load value at [r7 + 12] into r2, and add r2 and r3 and store the value in r3.
+Again, this is process of calculating the address of the element at index i in array arr.
+
+On line 47, we load the value at address [r7 + ]
+On line 48, we load the value at address [r7 + ]
+
+
+
+
+
+***
+
+Okay, so we've learned some idioms... let's see if we can find some à la Waldo in a different binary.
+
+Below is the disassembly for a different ARM binary, that was compiled from a different C program that I wrote, that implements similar functionality but with additional complexity.
+
+See if you can find Waldo in this binary...
+
+Did you find them? Do you want a hint? Do you want me to just tell you? Did you even make it this far or did you just scroll through all the text above and now you're startled that I've called you out so abruptly? 
+
+Well, if you want to see the original C source code, just click the link below and enter your credit card information and pay the small fee of $49.99 + the cost of shipping and handling...
+
+Just kidding, just click the button to the right of the screen.
+
+<button> Show me the MONEY </button>
+
+
