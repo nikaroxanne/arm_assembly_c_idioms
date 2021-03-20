@@ -38,12 +38,14 @@ int main() {
   
     scanf("%d %d %d %d", &n, &a, &b, &c);
 
+    int max_size = n + 1;
+    int terms[max_size];
 
     terms[1]=a;
     terms[2]=b;
     terms[3]=c;
     int ans = find_nth_term(n, a, b, c);
-    int ans_dynamic = find_nth_term_dynamic(n, a, b, c, &terms);
+    int ans_dynamic = find_nth_term_dynamic(n, a, b, c, terms);
     printf("%d", ans_dynamic);
     return 0;
 }

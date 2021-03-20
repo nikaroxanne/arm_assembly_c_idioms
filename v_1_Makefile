@@ -1,0 +1,98 @@
+
+###############################################################################
+#						Makefile for ARM Assembly Intro
+#	Compile script for C source files used in ARM Assembly Intro guide
+#	Each source file is compiled into ARM Assembly, using gcc, with one of
+#	four possible options
+#		1. No optimization
+#		2. O1 optimization
+#		3. O2 optimization
+#		4. O3 optimization
+#
+#	all  		- (default) compile all c files in directory
+# 	clean  		- clean up compiled object files and executable files
+#	
+#
+#
+###############################################################################
+
+EXECUTABLES = 1d_arrays array_reversal bitwise_operators n_lowest_nums nth_term_recursion sum_and_diff sum_of_digits variadic_functions 
+
+SOURCE_FILES = 1d_arrays.c array_reversal.c bitwise_operators.c n_lowest_nums.c nth_term_recursion.c sum_and_diff.c sum_of_digits.c variadic_functions.c 
+
+GCC = gcc
+
+FLAGS= -S -Wall -Wextra -Werror -Wfatal-errors -std=c99
+
+O1_FLAGS="-O1"
+O2_FLAGS="-O2"
+O3_FLAGS="-O3"
+
+
+###############################################################################
+#
+#	Compiling from source to ARM Assembly
+#
+###############################################################################
+
+all: $(EXECUTABLES)
+
+
+###############################################################################
+
+
+clean:
+	rm -f $(EXECUTABLES) *.o 
+
+
+
+
+###############################################################################
+
+
+O1_all:
+	$(GCC) $(FLAGS) $(O1_FLAGS) $(EXECUTABLES)
+
+O2_all:
+	$(GCC) $(FLAGS) $(O2_FLAGS) $(EXECUTABLES)
+
+O3_all:
+	$(GCC) $(FLAGS) $(O3_FLAGS) $(EXECUTABLES)
+
+%.o:%.c 
+	$(GCC) $(FLAGS) -c $<
+
+1d_arrays: 1d_arrays.o
+	$(GCC) $(FLAGS) -o 1d_arrays 1d_arrays.o 
+
+array_reversal: array_reversal.o
+	$(GCC) $(FLAGS) -o array_reversal array_reversal.o 
+
+basic_for_loop: basic_for_loop.o
+	$(GCC) $(FLAGS) -o basic_for_loop basic_for_loop.o 
+
+bitwise_operators: bitwise_operators.o 
+	$(GCC) $(FLAGS) -o bitwise_operators bitwise_operators.o 
+
+n_lowest_nums: n_lowest_nums.o
+	$(GCC) $(FLAGS) -o n_lowest_nums n_lowest_nums.o 
+
+nth_term_recursion: nth_term_recursion.o
+	$(GCC) $(FLAGS) -o nth_term_recursion nth_term_recursion.o 
+
+sum_and_diff: sum_and_diff.o 
+	$(GCC) $(FLAGS) -o sum_and_diff sum_and_diff.o 
+
+sum_of_digits: sum_of_digits.o 
+	$(GCC) $(FLAGS) -o sum_of_digits sum_of_digits.o 
+
+variadic_functions: variadic_functions.o 
+	$(GCC) $(FLAGS) -o variadic_functions variadic_functions.o 
+
+
+
+###############################################################################
+
+
+
+
