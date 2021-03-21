@@ -1,5 +1,5 @@
 
-bitwise_operators_O0:     file format elf32-littlearm
+bitwise_operators:     file format elf32-littlearm
 
 
 Disassembly of section .init:
@@ -88,11 +88,11 @@ Disassembly of section .text:
 000004b8 <deregister_tm_clones>:
  4b8:	4806      	ldr	r0, [pc, #24]	; (4d4 <deregister_tm_clones+0x1c>)
  4ba:	4b07      	ldr	r3, [pc, #28]	; (4d8 <deregister_tm_clones+0x20>)
- 4bc:	4478      	add	r0, pc
- 4be:	4a07      	ldr	r2, [pc, #28]	; (4dc <deregister_tm_clones+0x24>)
+ 4bc:	4a07      	ldr	r2, [pc, #28]	; (4dc <deregister_tm_clones+0x24>)
+ 4be:	4478      	add	r0, pc
  4c0:	447b      	add	r3, pc
- 4c2:	4283      	cmp	r3, r0
- 4c4:	447a      	add	r2, pc
+ 4c2:	447a      	add	r2, pc
+ 4c4:	4283      	cmp	r3, r0
  4c6:	d003      	beq.n	4d0 <deregister_tm_clones+0x18>
  4c8:	4b05      	ldr	r3, [pc, #20]	; (4e0 <deregister_tm_clones+0x28>)
  4ca:	58d3      	ldr	r3, [r2, r3]
@@ -100,9 +100,9 @@ Disassembly of section .text:
  4ce:	4718      	bx	r3
  4d0:	4770      	bx	lr
  4d2:	bf00      	nop
- 4d4:	00010b88 	.word	0x00010b88
+ 4d4:	00010b86 	.word	0x00010b86
  4d8:	00010b84 	.word	0x00010b84
- 4dc:	00010b38 	.word	0x00010b38
+ 4dc:	00010b3a 	.word	0x00010b3a
  4e0:	0000002c 	.word	0x0000002c
 
 000004e4 <register_tm_clones>:
@@ -365,9 +365,9 @@ Disassembly of section .text:
  6f6:	46bd      	mov	sp, r7
  6f8:	bd80      	pop	{r7, pc}
  6fa:	bf00      	nop
- 6fc:	000000b2 	.word	0x000000b2
- 700:	000000a6 	.word	0x000000a6
- 704:	0000009a 	.word	0x0000009a
+ 6fc:	00000142 	.word	0x00000142
+ 700:	00000136 	.word	0x00000136
+ 704:	0000012a 	.word	0x0000012a
 
 00000708 <main>:
  708:	b580      	push	{r7, lr}
@@ -390,7 +390,7 @@ Disassembly of section .text:
  72e:	3708      	adds	r7, #8
  730:	46bd      	mov	sp, r7
  732:	bd80      	pop	{r7, pc}
- 734:	00000076 	.word	0x00000076
+ 734:	00000106 	.word	0x00000106
 
 00000738 <__libc_csu_init>:
  738:	e92d 43f8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, lr}
