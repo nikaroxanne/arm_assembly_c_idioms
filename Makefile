@@ -39,9 +39,18 @@ SRC_DIR_VARIADIC_FUNCTIONS = $(addprefix variadic_functions/,variadic_functions.
 
 SRC_DIRS =  $(SRC_DIR_1D) $(SRC_DIR_ARRAY_REV) $(SRC_DIR_BITWISE_OPS) $(SRC_DIR_N_LOWEST_NUMS) $(SRC_DIR_NTH_TERM_RECURSION) $(SRC_DIR_SUM_AND_DIFF) $(SRC_DIR_SUM_OF_DIGITS) $(SRC_DIR_VARIADIC_FUNCTIONS)
 
-##DST_DIR_LIST=$(filter '$(>D)' $(SRC_DIRS))
-DST_DIRS = $(SRC_DIRS:.c=.o)
-EXEC_DIRS = $(DST_DIRS:.o=)
+DST_DIRS = $(DST_DIR_1D) $(DST_DIR_ARRAY_REV) $(DST_DIR_BITWISE_OPS) $(DST_DIR_N_LOWEST_NUMS) $(DST_DIR_NTH_TERM_RECURSION) $(DST_DIR_SUM_OF_DIGITS) $(DST_DIR_VARIADIC_FUNCTIONS)
+
+DST_DIR_1D = 1d_arrays_arm/
+DST_DIR_ARRAY_REV = array_reversal/
+DST_DIR_BITWISE_OPS = bitwise_operators/
+DST_DIR_N_LOWEST_NUMS = n_lowest_nums/
+DST_DIR_NTH_TERM_RECURSION = nth_term_recursion/
+DST_DIR_SUM_AND_DIFF = sum_and_diff/
+DST_DIR_SUM_OF_DIGITS = sum_of_digits/
+DST_DIR_VARIADIC_FUNCTIONS = variadic_functions/
+
+#EXEC_DIRS = $(DST_DIRS:.o=)
 
 GCC = gcc
 
@@ -64,17 +73,20 @@ DFLAGS= -D
 #
 ###############################################################################
 
-all: $(EXEC_DIRS)
+#all: $(EXEC_DIRS)
+all: $(EXECUTABLES)
 
 
 ###############################################################################
 
 
 clean:
-	rm -f $(DST_DIRS) *.o 
+	rm -f $(SRC_DIRS) *.o 
 
 
 
+#$(GCC) $(FLAGS) -c $< -o $(addprefix $(<D)/,$(@))
+##$(GCC) $(FLAGS) -o $(addprefix $(filter $(<D), $(DST_DIRS)), $@) $< $(LIBS)
 
 ###############################################################################
 
@@ -88,34 +100,32 @@ O2_all:
 O3_all:
 	$(GCC) $(FLAGS) $(O3_FLAGS) $(EXECUTABLES)
 
-##$(filter %.o, $(DST_DIRS)): %.o: $(SRC_DIRS)
-
 %.o: $(filter %.c, $(SRC_DIRS))
-	$(GCC) $(FLAGS) -c $< 
+	$(GCC) $(FLAGS) -c $< -o $(addprefix $(filter $(<D), $(DST_DIRS)), $@)
 
-1d_arrays: 1d_arrays.o
-	$(GCC) $(FLAGS) -o $(filter 1d_arrays, $(EXEC_DIRS)) $< $(LIBS)
+1d_arrays: 1d_arrays_arm/1d_arrays.o
+	$(GCC) $(FLAGS) -o $(addprefix $(<D)/, $@) $< $(LIBS)
 
-array_reversal: array_reversal.o
-	$(GCC) $(FLAGS) -o $(filter array_reversal, $(EXEC_DIRS)) $(filter array_reversal, $(DST_DIRS)) $(LIBS)
+array_reversal: array_reversal/array_reversal.o
+	$(GCC) $(FLAGS) -o $(addprefix $(<D)/, $@) $< $(LIBS)
 
-bitwise_operators: bitwise_operators.o 
-	$(GCC) $(FLAGS) -o $(filter bitwise_operators, $(EXEC_DIRS)) $(filter bitwise_operators, $(DST_DIRS)) $(LIBS)
+bitwise_operators: bitwise_operators/bitwise_operators.o 
+	$(GCC) $(FLAGS) -o $(addprefix $(<D)/, $@) $< $(LIBS)
 
-n_lowest_nums: n_lowest_nums.o
-	$(GCC) $(FLAGS) -o $(filter n_lowest_nums, $(EXEC_DIRS)) $(filter n_lowest_nums, $(DST_DIRS)) $(LIBS)
+n_lowest_nums: n_lowest_nums/n_lowest_nums.o
+	$(GCC) $(FLAGS) -o $(addprefix $(<D)/, $@) $< $(LIBS)
 
-nth_term_recursion: nth_term_recursion.o
-	$(GCC) $(FLAGS) -o $(filter nth_term_recursion, $(EXEC_DIRS)) $(filter nth_term_recursion, $(DST_DIRS)) $(LIBS)
+nth_term_recursion: nth_term_recursion/nth_term_recursion.o
+	$(GCC) $(FLAGS) -o $(addprefix $(<D)/, $@) $< $(LIBS)
 
-sum_and_diff: sum_and_diff.o 
-	$(GCC) $(FLAGS) -o $(filter sum_and_diff, $(EXEC_DIRS)) $(filter sum_and_diff, $(DST_DIRS)) $(LIBS)
+sum_and_diff: sum_and_diff/sum_and_diff.o 
+	$(GCC) $(FLAGS) -o $(addprefix $(<D)/, $@) $< $(LIBS)
 
-sum_of_digits: sum_of_digits.o 
-	$(GCC) $(FLAGS) -o sum_of_digits sum_of_digits.o 
+sum_of_digits: sum_of_digits/sum_of_digits.o 
+	$(GCC) $(FLAGS) -o $(addprefix $(<D)/, $@) $< $(LIBS)
 
-variadic_functions: variadic_functions.o 
-	$(GCC) $(FLAGS) -o variadic_functions variadic_functions.o 
+variadic_functions: variadic_functions/variadic_functions.o 
+	$(GCC) $(FLAGS) -o $(addprefix $(<D)/, $@) $< $(LIBS)
 
 
 
